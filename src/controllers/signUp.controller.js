@@ -27,6 +27,4 @@ export async function postSignUp(req, res) {
     console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
     res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
   }
-
-  return;
 }

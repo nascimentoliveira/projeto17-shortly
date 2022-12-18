@@ -28,11 +28,11 @@ export async function shorten(req, res) {
     console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
     res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
   }
-
-  return;
 }
 
 export async function getLinkById(req, res) {
+
+  delete res.locals.link.userId
 
   res.status(200).send(res.locals.link);
   return;
@@ -49,8 +49,8 @@ export async function redirectToLink(req, res) {
       SET 
         "visitCount"=$1
       WHERE
-        id=$2`,
-      [visitCount+1, id]
+        id=$2;`,
+      [visitCount + 1, id]
     );
 
     res.redirect(url);
@@ -59,6 +59,25 @@ export async function redirectToLink(req, res) {
     console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
     res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
   }
+}
 
-  return;
+export async function deleteLink(req, res) {
+
+  const { id } = res.locals.link;
+
+  try {
+    await connection.query(`
+      DELETE FROM
+        urls
+      WHERE
+        id=$1;`,
+      [id]
+    );
+
+    res.sendStatus(204);
+
+  } catch (err) {
+    console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
+    res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
+  }
 }

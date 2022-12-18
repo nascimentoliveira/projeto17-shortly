@@ -60,7 +60,7 @@ export async function linkIdValid(req, res, next) {
   try {
     const [link] = (await connection.query(`
       SELECT 
-        id, "shortUrl", url 
+        id, "userId", "shortUrl", url 
       FROM 
         urls 
       WHERE 
@@ -109,6 +109,19 @@ export async function shortUrlValid(req, res, next) {
   } catch (err) {
     console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
     res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
+    return;
+  }
+
+  next();
+}
+
+export async function urlUserValid(req, res, next) {
+
+  const { userId } = req.res.locals.link;
+  const { id } = res.locals.user;
+
+  if (userId !== id) {
+    res.status(401).send({ message: 'Operação não permitida!' });
     return;
   }
 

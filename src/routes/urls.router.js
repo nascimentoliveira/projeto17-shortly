@@ -1,12 +1,19 @@
 import { Router } from 'express';
 
 import { tokenValid } from '../middlewares/tokenValid.middleware.js';
-import { getLinkById, redirectToLink, shorten } from '../controllers/urls.controller.js';
+import {
+  shorten,
+  getLinkById, 
+  redirectToLink, 
+  deleteLink
+} from '../controllers/urls.controller.js';
+
 import { 
   shortUrlValid, 
   linkIdValid, 
   urlSchemaValid, 
-  urlValid
+  urlValid,
+  urlUserValid
 } from '../middlewares/url.middleware.js';
 
 export const urls = Router();
@@ -32,5 +39,9 @@ urls.get(
 );
 
 urls.delete(
-  '/urls/:id'
+  '/urls/:id',
+  tokenValid,
+  linkIdValid,
+  urlUserValid,
+  deleteLink
 );
