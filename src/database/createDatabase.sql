@@ -1,5 +1,12 @@
 CREATE DATABASE "shortly";
 
+CREATE TABLE "sessions" (
+	"id" SERIAL PRIMARY KEY,
+  "userId" INTEGER NOT NULL REFERENCES "users"("id"),
+	"token" TEXT UNIQUE NOT NULL,
+	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE "users" (
 	"id" SERIAL PRIMARY KEY,
 	"name" VARCHAR(50) NOT NULL,
@@ -8,11 +15,9 @@ CREATE TABLE "users" (
   "createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE "sessions" (
-	"id" SERIAL PRIMARY KEY,
-  "userId" INTEGER NOT NULL REFERENCES "users"("id"),
-	"token" TEXT UNIQUE NOT NULL,
-	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
+CREATE TABLE "userUrl" (
+	"userId" INTEGER NOT NULL REFERENCES "users"("id"),
+	"urlId" INTEGER NOT NULL REFERENCES "url"("id"),
 );
 
 CREATE TABLE "urls" (

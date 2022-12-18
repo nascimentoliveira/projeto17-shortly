@@ -18,7 +18,11 @@ export async function tokenValid(req, res, next) {
   try {
     const [session] = (await connection.query(`
     SELECT 
-      users.id, users.name, users.email, sessions."createdAt"
+      users.id, 
+      users.name, 
+      users.email, 
+      sessions."createdAt", 
+      session.id AS sessionId
     FROM 
       sessions
     JOIN 
@@ -30,9 +34,21 @@ export async function tokenValid(req, res, next) {
       [token]
     )).rows;
 
+    if (!session) {
+      res.status(404).send({ message: 'Usuário não encontrado!' });
+      return;
+    }
+
     if (session.createdAt.setDate(
       session.createdAt.getDate() + DAYS_TO_EXPIRE) < new Date) {
-      res.status(401).send({ message: 'Entre com sua conta!' });
+        await connection.query(`
+          DELETE FROM
+            sessions
+          WHERE
+            id=$1;`,
+          [session.sessionId]
+        );
+      res.status(401).send({ message: 'Token expirado, entre com sua conta!' });
       return;
     }
 
