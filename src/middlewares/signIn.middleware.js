@@ -1,7 +1,7 @@
-import { signInSchema } from '../models/signIn.model.js';
-import { connection } from '../database/database.js';
 import bcrypt from 'bcrypt';
 
+import { signInSchema } from '../models/signIn.model.js';
+import { connection } from '../database/database.js';
 import {
   MESSAGE_INTERNAL_SERVER_ERROR,
   MESSAGE_CLIENT_SERVER_ERROR,
@@ -30,7 +30,7 @@ export async function signInValid(req, res, next) {
   const { email, password } = res.locals.user;
 
   try {
-    const user = (await connection.query(`
+    const [user] = (await connection.query(`
       SELECT 
         id, email, password
       FROM 
@@ -38,7 +38,7 @@ export async function signInValid(req, res, next) {
       WHERE 
         email=$1;`,
       [email]
-    )).rows[0];
+    )).rows;
 
     if (!user) {
       res.status(401).send({ message: 'Usuário não cadastrado!' });

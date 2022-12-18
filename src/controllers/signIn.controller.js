@@ -1,6 +1,6 @@
-import { connection } from '../database/database.js';
 import { v4 as uuid } from 'uuid';
 
+import { connection } from '../database/database.js';
 import {
   MESSAGE_INTERNAL_SERVER_ERROR,
   MESSAGE_CLIENT_SERVER_ERROR

@@ -1,27 +1,28 @@
-import bcrypt from 'bcrypt';
+import { nanoid } from 'nanoid';
 
 import { connection } from '../database/database.js';
 import {
   MESSAGE_INTERNAL_SERVER_ERROR,
   MESSAGE_CLIENT_SERVER_ERROR,
-  ROUNDS_ENCRYPT
 } from '../constants.js';
 
-export async function postSignUp(req, res) {
+export async function shorten(req, res) {
 
-  const { name, email, password } = res.locals.user;
+  const { id } = res.locals.user;
+  const { url } = res.locals.url;
+  const shortUrl = nanoid(8);
 
   try {
     await connection.query(`
       INSERT INTO 
-        users 
-        (name, email, password)
+        urls 
+        ("userId", "shortUrl", url)
       VALUES 
         ($1, $2, $3);`,
-      [name, email, bcrypt.hashSync(password, ROUNDS_ENCRYPT)]
+      [id, shortUrl, url]
     );
 
-    res.status(201).send({ message: 'Usuário criado com sucesso!' });
+    res.status(201).send({ shortUrl: shortUrl });
 
   } catch (err) {
     console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);

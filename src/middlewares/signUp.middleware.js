@@ -1,6 +1,6 @@
+
 import { signUpSchema } from '../models/signUp.model.js';
 import { connection } from '../database/database.js';
-
 import {
   MESSAGE_INTERNAL_SERVER_ERROR,
   MESSAGE_CLIENT_SERVER_ERROR,
@@ -34,7 +34,7 @@ export async function signUpValid(req, res, next) {
   }
 
   try {
-    const user = (await connection.query(`
+    const [user] = (await connection.query(`
       SELECT 
         email
       FROM 
@@ -42,7 +42,7 @@ export async function signUpValid(req, res, next) {
       WHERE 
         email=$1;`,
       [email]
-    )).rows[0];
+    )).rows;
 
     if (user) {
       res.status(409).send({ message: 'E-mail já cadastrado!' });

@@ -1,5 +1,4 @@
 import { connection } from '../database/database.js';
-
 import {
   MESSAGE_INTERNAL_SERVER_ERROR,
   MESSAGE_CLIENT_SERVER_ERROR
@@ -9,28 +8,30 @@ export async function tokenValid(req, res, next) {
 
   const { authorization } = req.headers;
   const token = authorization?.replace('Bearer ', '');
+  const DAYS_TO_EXPIRE = 7;
 
   if (!token) {
-    res.status(400).send({ message: 'Formato de cabeçalho inesperado! Campo "Authorization" não encontrado.' });
+    res.status(401).send({ message: 'Formato de cabeçalho inesperado! Campo "Authorization" não encontrado.' });
     return;
   }
 
   try {
-    const session = (await connection.query(`
+    const [session] = (await connection.query(`
     SELECT 
-      users.id, users.name, users.email, session.expiredAt
+      users.id, users.name, users.email, sessions."createdAt"
     FROM 
       sessions
     JOIN 
       users
     ON
-      users.id=session."userId"
+      users.id=sessions."userId"
     WHERE 
       token=$1;`,
       [token]
-    )).rows[0];
+    )).rows;
 
-    if (!session.expiredAt < new Date) {
+    if (session.createdAt.setDate(
+      session.createdAt.getDate() + DAYS_TO_EXPIRE) < new Date) {
       res.status(401).send({ message: 'Entre com sua conta!' });
       return;
     }
