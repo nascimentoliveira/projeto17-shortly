@@ -53,12 +53,12 @@ export async function urlValid(req, res, next) {
   next();
 }
 
-export async function urlIdValid(req, res, next) {
+export async function linkIdValid(req, res, next) {
 
   const { id } = req.params;
 
   try {
-    const [url] = (await connection.query(`
+    const [link] = (await connection.query(`
       SELECT 
         id, "shortUrl", url 
       FROM 
@@ -68,12 +68,43 @@ export async function urlIdValid(req, res, next) {
       [id]
     )).rows;
 
-    if (!url) {
+    if (!link) {
       res.status(404).send({ message: 'Link não cadastrado!' });
       return;
     }
 
-    res.locals.url = url;
+    res.locals.link = link;
+
+  } catch (err) {
+    console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
+    res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
+    return;
+  }
+
+  next();
+}
+
+export async function shortUrlValid(req, res, next) {
+
+  const { shortUrl } = req.params;
+
+  try {
+    const [link] = (await connection.query(`
+      SELECT 
+        id, url, "visitCount" 
+      FROM 
+        urls 
+      WHERE 
+        "shortUrl"=$1;`,
+      [shortUrl]
+    )).rows;
+
+    if (!link) {
+      res.status(404).send({ message: 'Link não cadastrado!' });
+      return;
+    }
+
+    res.locals.link = link;
 
   } catch (err) {
     console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);

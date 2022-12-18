@@ -20,12 +20,6 @@ CREATE TABLE "urls" (
   "userId" INTEGER NOT NULL REFERENCES "users"("id"),
 	"shortUrl" TEXT UNIQUE NOT NULL,
 	"url" TEXT NOT NULL,
-	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
-);
-
-CREATE TABLE "visits" (
-	"id" SERIAL PRIMARY KEY,
-  "userId" INTEGER NOT NULL REFERENCES "users"("id"),
-	"UrlId" INTEGER NOT NULL REFERENCES "urls"("id"),
+	"visitCount" INTEGER NOT NULL DEFAULT 0,
 	"createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
 );

@@ -32,8 +32,33 @@ export async function shorten(req, res) {
   return;
 }
 
-export async function getUrlById(req, res) {
+export async function getLinkById(req, res) {
 
-  res.status(200).send(res.locals.url);
+  res.status(200).send(res.locals.link);
+  return;
+}
+
+export async function redirectToLink(req, res) {
+
+  const { id, url, visitCount } = res.locals.link;
+
+  try {
+    await connection.query(`
+      UPDATE 
+        urls
+      SET 
+        "visitCount"=$1
+      WHERE
+        id=$2`,
+      [visitCount+1, id]
+    );
+
+    res.redirect(url);
+
+  } catch (err) {
+    console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
+    res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
+  }
+
   return;
 }

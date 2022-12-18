@@ -1,8 +1,13 @@
 import { Router } from 'express';
 
 import { tokenValid } from '../middlewares/tokenValid.middleware.js';
-import { urlIdValid, urlSchemaValid, urlValid } from '../middlewares/url.middleware.js';
-import { getUrlById, shorten } from '../controllers/urls.controller.js';
+import { getLinkById, redirectToLink, shorten } from '../controllers/urls.controller.js';
+import { 
+  shortUrlValid, 
+  linkIdValid, 
+  urlSchemaValid, 
+  urlValid
+} from '../middlewares/url.middleware.js';
 
 export const urls = Router();
 
@@ -16,12 +21,14 @@ urls.post(
 
 urls.get(
   '/urls/:id',
-  urlIdValid,
-  getUrlById
+  linkIdValid,
+  getLinkById
 );
 
 urls.get(
-  '/urls/open/:shortUrl'
+  '/urls/open/:shortUrl',
+  shortUrlValid,
+  redirectToLink
 );
 
 urls.delete(
