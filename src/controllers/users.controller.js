@@ -8,41 +8,27 @@ export async function getUserShortenedUrls(req, res) {
 
   try {
     const [userShortenedUrls] = (await connection.query(`
-    SELECT 
-      users.id, users.name, SUM(urls."visitCount") AS "visitCount", (
-        SELECT 
-          json_agg(json_build_object(
-            'id', url.id, 
-            'shortUrl', url."shortUrl", 
-            'url', url.url, 
-            'visitCount', url."visitCount"
-          )) AS "shortenedUrls"
-        FROM
-          urls AS url
-      ) 
-    FROM  
-      urls
-    JOIN  
-      users 
-    ON 
-      users.id=urls."userId"
-    GROUP BY
-      users.id;`
+      SELECT 
+        users.id, users.name, SUM(urls."visitCount") AS "visitCount", (
+          SELECT 
+            json_agg(json_build_object(
+              'id', u.id, 
+              'shortUrl', u."shortUrl", 
+              'url', u.url, 
+              'visitCount', u."visitCount"
+            )) AS "shortenedUrls"
+          FROM
+            urls AS u
+        ) 
+      FROM  
+        urls
+      JOIN  
+        users 
+      ON 
+        users.id=urls."userId"
+      GROUP BY
+        users.id;`
     )).rows;
-
-    /* const [userShortenedUrls] = (await connection.query(`
-        SELECT 
-        json_agg(json_build_object(
-            'id', urls.id, 
-            'shortUrl', urls."shortUrl", 
-            'url', urls.url, 
-            'visitCount', urls."visitCount"
-          )) AS "shortenedUrls"
-        FROM
-          urls
-       
-    ;`
-    )).rows; */
 
     res.status(200).send(userShortenedUrls);
 
