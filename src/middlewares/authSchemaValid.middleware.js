@@ -1,4 +1,4 @@
-import { authSchemaSignIn, authSchemaSignUp } from '../../models/authentication.model.js';
+import { authSchemaSignIn, authSchemaSignUp } from '../models/authentication.model.js';
 
 import { MESSAGE_FORMAT_ERROR } from '../constants.js';
 

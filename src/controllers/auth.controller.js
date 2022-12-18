@@ -1,4 +1,4 @@
-import { connection } from '../../database/database.js';
+import { connection } from '../database/database.js';
 import bcrypt from 'bcrypt';
 import { v4 as uuid } from 'uuid';
 
@@ -46,7 +46,7 @@ export async function signUp(req, res) {
       [name, email, bcrypt.hashSync(password, ROUNDS_ENCRYPT)]
     );
 
-    res.status(200).send({ token: token });
+    res.status(201).send({ message: 'Usuário criado com sucesso!' });
 
   } catch (err) {
     console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
