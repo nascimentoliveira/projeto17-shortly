@@ -21,6 +21,8 @@ export async function getRanking(req, res) {
         users.id=urls."userId"
       GROUP BY
         users.id
+      ORDER BY
+        "visitCount" DESC
       LIMIT 10;`
     )).rows;
 
