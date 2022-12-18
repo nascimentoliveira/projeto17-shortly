@@ -52,3 +52,34 @@ export async function urlValid(req, res, next) {
 
   next();
 }
+
+export async function urlIdValid(req, res, next) {
+
+  const { id } = req.params;
+
+  try {
+    const [url] = (await connection.query(`
+      SELECT 
+        id, "shortUrl", url 
+      FROM 
+        urls 
+      WHERE 
+        "id"=$1;`,
+      [id]
+    )).rows;
+
+    if (!url) {
+      res.status(404).send({ message: 'Link não cadastrado!' });
+      return;
+    }
+
+    res.locals.url = url;
+
+  } catch (err) {
+    console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
+    res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
+    return;
+  }
+
+  next();
+}

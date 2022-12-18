@@ -31,3 +31,9 @@ export async function shorten(req, res) {
 
   return;
 }
+
+export async function getUrlById(req, res) {
+
+  res.status(200).send(res.locals.url);
+  return;
+}

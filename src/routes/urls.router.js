@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
 import { tokenValid } from '../middlewares/tokenValid.middleware.js';
-import { urlSchemaValid, urlValid } from '../middlewares/url.middleware.js';
-import { shorten } from '../controllers/urls.controller.js';
+import { urlIdValid, urlSchemaValid, urlValid } from '../middlewares/url.middleware.js';
+import { getUrlById, shorten } from '../controllers/urls.controller.js';
 
 export const urls = Router();
 
@@ -15,7 +15,9 @@ urls.post(
 );
 
 urls.get(
-  '/urls/:id'
+  '/urls/:id',
+  urlIdValid,
+  getUrlById
 );
 
 urls.get(
