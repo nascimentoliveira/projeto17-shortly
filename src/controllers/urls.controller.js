@@ -9,17 +9,17 @@ import {
 export async function shorten(req, res) {
 
   const { id } = res.locals.user;
-  const { url } = res.locals.url;
+  const { urlId } = res.locals.urlId;
   const shortUrl = nanoid(8);
 
   try {
     await connection.query(`
       INSERT INTO 
-        urls 
-        ("userId", "shortUrl", url)
+        "usersUrls" 
+        ("userId", "urlId", "shortUrl")
       VALUES 
         ($1, $2, $3);`,
-      [id, shortUrl, url]
+      [id, urlId, shortUrl]
     );
 
     res.status(201).send({ shortUrl: shortUrl });
@@ -40,12 +40,12 @@ export async function getLinkById(req, res) {
 
 export async function redirectToLink(req, res) {
 
-  const { id, url, visitCount } = res.locals.link;
+  const { id, bigUrl, visitCount } = res.locals.link;
 
   try {
     await connection.query(`
       UPDATE 
-        urls
+        "usersUrls"
       SET 
         "visitCount"=$1
       WHERE
@@ -53,7 +53,7 @@ export async function redirectToLink(req, res) {
       [visitCount + 1, id]
     );
 
-    res.redirect(url);
+    res.redirect(bigUrl);
 
   } catch (err) {
     console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
@@ -68,7 +68,7 @@ export async function deleteLink(req, res) {
   try {
     await connection.query(`
       DELETE FROM
-        urls
+        "usersUrls"
       WHERE
         id=$1;`,
       [id]

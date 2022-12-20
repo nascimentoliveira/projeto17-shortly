@@ -23,6 +23,40 @@ export function urlSchemaValid(req, res, next) {
   next();
 }
 
+export async function urlRegistered(req, res, next) {
+
+  const { url } = res.locals.url;
+
+  try {
+    await connection.query(`
+      INSERT INTO 
+        urls ("bigUrl")
+      VALUES 
+        ($1)
+      ON CONFLICT ("bigUrl") DO NOTHING;`,
+      [url]
+    );
+
+    const [urlId] = (await connection.query(`
+      SELECT 
+        id
+      FROM
+        urls
+      WHERE "bigUrl"=$1;`,
+      [url]
+    )).rows;
+
+    res.locals.urlId = { urlId: urlId.id };
+
+  } catch (err) {
+    console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
+    res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
+    return;
+  }
+
+  next();
+}
+
 export async function urlValid(req, res, next) {
 
   const { id } = res.locals.user;
@@ -33,9 +67,17 @@ export async function urlValid(req, res, next) {
       SELECT 
         * 
       FROM 
-        urls 
+        "usersUrls"
+      JOIN
+        users
+      ON
+        "usersUrls"."userId"=users.id
+      JOIN
+        urls
+      ON
+        "usersUrls"."urlId"=urls.id
       WHERE 
-        "userId"=$1 AND url=$2;`,
+        users.id=$1 AND urls."bigUrl"=$2;`,
       [id, url]
     )).rows;
 
@@ -53,18 +95,25 @@ export async function urlValid(req, res, next) {
   next();
 }
 
-export async function linkIdValid(req, res, next) {
+export async function shortIdValid(req, res, next) {
 
   const { id } = req.params;
 
   try {
-    const [link] = (await connection.query(`
+    const [url] = (await connection.query(`
       SELECT 
-        id, "userId", "shortUrl", url 
+        "usersUrls".id,
+        "usersUrls"."userId",
+        "usersUrls"."shortUrl", 
+        urls.bigUrl AS url
       FROM 
-        urls 
+        "usersUrls"
+      JOIN
+        urls
+      ON
+        "usersUrls"."urlId"=urls.id
       WHERE 
-        "id"=$1;`,
+        "usersUrls".id=$1;`,
       [id]
     )).rows;
 
@@ -91,9 +140,13 @@ export async function shortUrlValid(req, res, next) {
   try {
     const [link] = (await connection.query(`
       SELECT 
-        id, url, "visitCount" 
+        "usersUrls".id, "usersUrls"."shortUrl", "usersUrls"."visitCount", urls."bigUrl" 
       FROM 
-        urls 
+        "usersUrls"
+      JOIN
+        urls
+      ON
+        "usersUrls"."urlId"=urls.id
       WHERE 
         "shortUrl"=$1;`,
       [shortUrl]
@@ -115,7 +168,7 @@ export async function shortUrlValid(req, res, next) {
   next();
 }
 
-export async function urlUserValid(req, res, next) {
+export function urlUserValid(req, res, next) {
 
   const { userId } = req.res.locals.link;
   const { id } = res.locals.user;

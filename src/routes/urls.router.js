@@ -9,10 +9,11 @@ import {
 } from '../controllers/urls.controller.js';
 
 import { 
-  shortUrlValid, 
-  linkIdValid, 
-  urlSchemaValid, 
+  urlSchemaValid,
+  urlRegistered,
   urlValid,
+  shortIdValid, 
+  shortUrlValid, 
   urlUserValid
 } from '../middlewares/url.middleware.js';
 
@@ -22,13 +23,14 @@ urls.post(
   '/urls/shorten',
   tokenValid,
   urlSchemaValid,
+  urlRegistered,
   urlValid,
   shorten
 );
 
 urls.get(
   '/urls/:id',
-  linkIdValid,
+  shortIdValid,
   getLinkById
 );
 
@@ -41,7 +43,7 @@ urls.get(
 urls.delete(
   '/urls/:id',
   tokenValid,
-  linkIdValid,
+  shortIdValid,
   urlUserValid,
   deleteLink
 );

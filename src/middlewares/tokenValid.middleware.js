@@ -21,8 +21,8 @@ export async function tokenValid(req, res, next) {
       users.id, 
       users.name, 
       users.email, 
-      sessions."createdAt" AS sessionCreateTime, 
-      session.id AS sessionId
+      sessions."createdAt" AS "sessionCreatedAt", 
+      sessions.id AS "sessionId"
     FROM 
       sessions
     JOIN 
@@ -39,8 +39,8 @@ export async function tokenValid(req, res, next) {
       return;
     }
 
-    if (user.sessionCreateTime.setDate(
-      user.sessionCreateTime.getDate() + DAYS_TOKEN_EXPIRE) < new Date) {
+    if (user.sessionCreatedAt.setDate(
+      user.sessionCreatedAt.getDate() + DAYS_TOKEN_EXPIRE) < new Date) {
         await connection.query(`
           DELETE FROM
             sessions
