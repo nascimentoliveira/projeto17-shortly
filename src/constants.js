@@ -5,3 +5,5 @@ export const MESSAGE_CLIENT_SERVER_ERROR = 'Oops! Não foi possível processar a
 export const MESSAGE_FORMAT_ERROR = 'Body não tem o formato esperado!';
 
 export const ROUNDS_ENCRYPT = 12;
+
+export const DAYS_TOKEN_EXPIRE = 7;
