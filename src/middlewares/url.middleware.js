@@ -1,10 +1,6 @@
 import { urlSchema } from '../models/url.model.js';
-import { connection } from '../database/database.js';
-import {
-  MESSAGE_INTERNAL_SERVER_ERROR,
-  MESSAGE_CLIENT_SERVER_ERROR,
-  MESSAGE_FORMAT_ERROR
-} from '../constants.js';
+import { MESSAGES } from '../constants.js';
+import { urlRepository } from '../repositories/url.repository.js';
 
 export function urlSchemaValid(req, res, next) {
 
@@ -14,7 +10,7 @@ export function urlSchemaValid(req, res, next) {
 
   if (error) {
     const errors = error.details.map((detail) => detail.message);
-    res.status(422).send({ message: MESSAGE_FORMAT_ERROR, errors: errors });
+    res.status(422).send({ message: MESSAGES.FORMAT_ERROR, errors: errors });
     return;
   }
 
@@ -28,29 +24,15 @@ export async function urlRegistered(req, res, next) {
   const { url } = res.locals.url;
 
   try {
-    await connection.query(`
-      INSERT INTO 
-        urls ("bigUrl")
-      VALUES 
-        ($1)
-      ON CONFLICT ("bigUrl") DO NOTHING;`,
-      [url]
-    );
+    await urlRepository.insertUrl(url);
 
-    const [urlId] = (await connection.query(`
-      SELECT 
-        id
-      FROM
-        urls
-      WHERE "bigUrl"=$1;`,
-      [url]
-    )).rows;
+    const [urlId] = (await urlRepository.getIdUrl(url)).rows;
 
     res.locals.urlId = { urlId: urlId.id };
 
   } catch (err) {
-    console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
-    res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
+    console.error(MESSAGES.INTERNAL_SERVER_ERROR, err);
+    res.status(500).send({ message: MESSAGES.CLIENT_SERVER_ERROR });
     return;
   }
 
@@ -63,23 +45,7 @@ export async function urlValid(req, res, next) {
   const { url } = res.locals.url;
 
   try {
-    const [urlUser] = (await connection.query(`
-      SELECT 
-        * 
-      FROM 
-        "usersUrls"
-      JOIN
-        users
-      ON
-        "usersUrls"."userId"=users.id
-      JOIN
-        urls
-      ON
-        "usersUrls"."urlId"=urls.id
-      WHERE 
-        users.id=$1 AND urls."bigUrl"=$2;`,
-      [id, url]
-    )).rows;
+    const [urlUser] = (await urlRepository.matchUserUrl(id, url)).rows;
 
     if (urlUser) {
       res.status(409).send({ message: 'Este link já foi encurtado por você!' });
@@ -87,8 +53,8 @@ export async function urlValid(req, res, next) {
     }
 
   } catch (err) {
-    console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
-    res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
+    console.error(MESSAGES.INTERNAL_SERVER_ERROR, err);
+    res.status(500).send({ message: MESSAGES.CLIENT_SERVER_ERROR });
     return;
   }
 
@@ -100,22 +66,7 @@ export async function shortIdValid(req, res, next) {
   const { id } = req.params;
 
   try {
-    const [link] = (await connection.query(`
-      SELECT 
-        "usersUrls".id,
-        "usersUrls"."userId",
-        "usersUrls"."shortUrl", 
-        urls."bigUrl" AS url
-      FROM 
-        "usersUrls"
-      JOIN
-        urls
-      ON
-        "usersUrls"."urlId"=urls.id
-      WHERE 
-        "usersUrls".id=$1;`,
-      [id]
-    )).rows;
+    const [link] = (await urlRepository.getLinkById(id)).rows;
 
     if (!link) {
       res.status(404).send({ message: 'Link não cadastrado!' });
@@ -125,8 +76,8 @@ export async function shortIdValid(req, res, next) {
     res.locals.link = link;
 
   } catch (err) {
-    console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
-    res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
+    console.error(MESSAGES.INTERNAL_SERVER_ERROR, err);
+    res.status(500).send({ message: MESSAGES.CLIENT_SERVER_ERROR });
     return;
   }
 
@@ -138,19 +89,7 @@ export async function shortUrlValid(req, res, next) {
   const { shortUrl } = req.params;
 
   try {
-    const [link] = (await connection.query(`
-      SELECT 
-        "usersUrls".id, "usersUrls"."shortUrl", "usersUrls"."visitCount", urls."bigUrl" 
-      FROM 
-        "usersUrls"
-      JOIN
-        urls
-      ON
-        "usersUrls"."urlId"=urls.id
-      WHERE 
-        "shortUrl"=$1;`,
-      [shortUrl]
-    )).rows;
+    const [link] = (await urlRepository.getLinkByShortUrl(shortUrl)).rows;
 
     if (!link) {
       res.status(404).send({ message: 'Link não cadastrado!' });
@@ -160,8 +99,8 @@ export async function shortUrlValid(req, res, next) {
     res.locals.link = link;
 
   } catch (err) {
-    console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
-    res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
+    console.error(MESSAGES.INTERNAL_SERVER_ERROR, err);
+    res.status(500).send({ message: MESSAGES.CLIENT_SERVER_ERROR });
     return;
   }
 
