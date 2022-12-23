@@ -32,7 +32,7 @@ export async function signInValid(req, res, next) {
   try {
     const [user] = (await connection.query(`
       SELECT 
-        id, email, password
+        id, name, email, password
       FROM 
         users 
       WHERE 

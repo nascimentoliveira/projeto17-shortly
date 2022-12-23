@@ -22,7 +22,7 @@ export async function shorten(req, res) {
       [id, urlId, shortUrl]
     );
 
-    res.status(201).send({ shortUrl: shortUrl });
+    res.status(201).send({ shortUrl: shortUrl, message: 'Seu link agora é menor!' });
 
   } catch (err) {
     console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);

@@ -7,7 +7,7 @@ import {
 } from '../constants.js';
 
 export async function postSignIn(req, res) {
-  const { id } = res.locals.user;
+  const { id, name } = res.locals.user;
   const token = uuid();
 
   try {
@@ -20,7 +20,7 @@ export async function postSignIn(req, res) {
       [id, token]
     );
 
-    res.status(200).send({ token: token });
+    res.status(200).send({ name: name, token: token });
 
   } catch (err) {
     console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);

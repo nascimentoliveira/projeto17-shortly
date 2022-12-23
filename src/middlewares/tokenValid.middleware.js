@@ -30,7 +30,7 @@ export async function tokenValid(req, res, next) {
     ON
       users.id=sessions."userId"
     WHERE 
-      token=$1;`,
+      sessions.token=$1;`,
       [token]
     )).rows;
 
@@ -41,13 +41,6 @@ export async function tokenValid(req, res, next) {
 
     if (user.sessionCreatedAt.setDate(
       user.sessionCreatedAt.getDate() + DAYS_TOKEN_EXPIRE) < new Date) {
-        await connection.query(`
-          DELETE FROM
-            sessions
-          WHERE
-            id=$1;`,
-          [user.sessionId]
-        );
       res.status(401).send({ message: 'Token expirado, entre novamente com sua conta!' });
       return;
     }

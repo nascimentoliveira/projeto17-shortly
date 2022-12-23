@@ -82,7 +82,7 @@ export async function urlValid(req, res, next) {
     )).rows;
 
     if (urlUser) {
-      res.status(409).send({ message: 'Este link já foi encurtado!' });
+      res.status(409).send({ message: 'Este link já foi encurtado por você!' });
       return;
     }
 
@@ -100,12 +100,12 @@ export async function shortIdValid(req, res, next) {
   const { id } = req.params;
 
   try {
-    const [url] = (await connection.query(`
+    const [link] = (await connection.query(`
       SELECT 
         "usersUrls".id,
         "usersUrls"."userId",
         "usersUrls"."shortUrl", 
-        urls.bigUrl AS url
+        urls."bigUrl" AS url
       FROM 
         "usersUrls"
       JOIN
