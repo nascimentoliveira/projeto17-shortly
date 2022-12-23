@@ -68,6 +68,44 @@ async function getLinkByShortUrl(shortUrl) {
   );
 }
 
+async function getShortUrlsByUserId(userId) {
+  return connection.query(`
+    SELECT 
+      users.id, users.name, SUM("usersUrls"."visitCount") AS "visitCount", (
+        SELECT 
+          json_agg(json_build_object(
+            'id', "usersUrls".id, 
+            'shortUrl', "usersUrls"."shortUrl", 
+            'url', urls."bigUrl", 
+            'visitCount', "usersUrls"."visitCount"
+          )) AS "shortenedUrls"
+        FROM
+          "usersUrls"
+        JOIN  
+          urls
+        ON 
+          "usersUrls"."urlId"=urls.id
+        WHERE
+          "usersUrls"."userId"=$1
+      ) 
+    FROM  
+      "usersUrls"
+    JOIN  
+      urls
+    ON 
+      "usersUrls"."urlId"=urls.id
+    JOIN  
+      users 
+    ON 
+      "usersUrls"."userId"=users.id
+    WHERE
+      "usersUrls"."userId"=$1
+    GROUP BY
+      users.id;`,
+    [userId]
+  );
+}
+
 async function matchUserUrl(userId, url) {
   return connection.query(`
     SELECT 
@@ -116,6 +154,7 @@ export const urlRepository = {
   getIdUrl,
   getLinkById,
   getLinkByShortUrl,
+  getShortUrlsByUserId,
   matchUserUrl,
   updateVisitsCount,
   deleteShortURl

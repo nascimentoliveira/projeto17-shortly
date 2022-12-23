@@ -34,8 +34,51 @@ async function getUserByEmail(email) {
   );
 }
 
+async function getUserByToken(token) {
+  return connection.query(`
+    SELECT 
+      users.id, 
+      users.name, 
+      users.email, 
+      sessions."createdAt" AS "sessionCreatedAt", 
+      sessions.id AS "sessionId"
+    FROM 
+      sessions
+    JOIN 
+      users
+    ON
+      users.id=sessions."userId"
+    WHERE 
+      sessions.token=$1;`,
+    [token]
+  );
+}
+
+async function getRankingUsers() {
+  return connection.query(`
+    SELECT 
+      users.id, 
+      users.name, 
+      COUNT("usersUrls"."visitCount") AS "linksCount", 
+      COALESCE(SUM("usersUrls"."visitCount"), 0) AS "visitCount"
+    FROM
+      users 
+    LEFT JOIN  
+      "usersUrls"
+    ON 
+      users.id="usersUrls"."userId"
+    GROUP BY
+      users.id
+    ORDER BY
+      "visitCount" DESC
+    LIMIT 10;`
+  );
+}
+
 export const userRepository = {
+  createUser,
   createSession,
   getUserByEmail,
-  createUser
+  getUserByToken,
+  getRankingUsers
 };

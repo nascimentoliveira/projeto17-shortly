@@ -1,9 +1,5 @@
-import { connection } from '../database/database.js';
-import {
-  MESSAGE_INTERNAL_SERVER_ERROR,
-  MESSAGE_CLIENT_SERVER_ERROR,
-  DAYS_TOKEN_EXPIRE
-} from '../constants.js';
+import { userRepository } from '../repositories/user.repository.js';
+import { MESSAGES, DAYS_TOKEN_EXPIRE } from '../constants.js';
 
 export async function tokenValid(req, res, next) {
 
@@ -16,23 +12,7 @@ export async function tokenValid(req, res, next) {
   }
 
   try {
-    const [user] = (await connection.query(`
-    SELECT 
-      users.id, 
-      users.name, 
-      users.email, 
-      sessions."createdAt" AS "sessionCreatedAt", 
-      sessions.id AS "sessionId"
-    FROM 
-      sessions
-    JOIN 
-      users
-    ON
-      users.id=sessions."userId"
-    WHERE 
-      sessions.token=$1;`,
-      [token]
-    )).rows;
+    const [user] = (await userRepository.getUserByToken(token)).rows;
 
     if (!user) {
       res.status(404).send({ message: 'Usuário não encontrado!' });
@@ -45,11 +25,11 @@ export async function tokenValid(req, res, next) {
       return;
     }
 
-    res.locals.user = { id: user.id, name: user.name, email: user.email }
+    res.locals.user = { id: user.id, name: user.name, email: user.email };
 
   } catch (err) {
-    console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
-    res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
+    console.error(MESSAGES.INTERNAL_SERVER_ERROR, err);
+    res.status(500).send({ message: MESSAGES.CLIENT_SERVER_ERROR });
     return;
   }
 
