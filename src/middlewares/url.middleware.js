@@ -5,7 +5,6 @@ import { urlRepository } from '../repositories/url.repository.js';
 export function urlSchemaValid(req, res, next) {
 
   const url = req.body;
-
   const { error } = urlSchema.validate(url, { abortEarly: false });
 
   if (error) {
@@ -25,9 +24,7 @@ export async function urlRegistered(req, res, next) {
 
   try {
     await urlRepository.insertUrl(url);
-
     const [urlId] = (await urlRepository.getIdUrl(url)).rows;
-
     res.locals.urlId = { urlId: urlId.id };
 
   } catch (err) {

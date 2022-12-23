@@ -7,7 +7,6 @@ export async function getUserShortenedUrls(req, res) {
 
   try {
     const [userShortenedUrls] = (await urlRepository.getShortUrlsByUserId(id)).rows;
-
     res.status(200).send(userShortenedUrls);
 
   } catch (err) {

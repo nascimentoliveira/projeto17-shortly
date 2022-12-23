@@ -11,7 +11,6 @@ export async function shorten(req, res) {
 
   try {
     await urlRepository.createShortUrl(id, urlId, shortUrl);
-
     res.status(201).send({ shortUrl: shortUrl, message: 'Seu link agora é menor!' });
 
   } catch (err) {
@@ -23,7 +22,6 @@ export async function shorten(req, res) {
 export async function getLinkById(req, res) {
 
   delete res.locals.link.userId;
-
   res.status(200).send(res.locals.link);
   return;
 }
@@ -34,7 +32,6 @@ export async function redirectToLink(req, res) {
 
   try {
     await urlRepository.updateVisitsCount(id, visitCount);
-
     res.redirect(bigUrl);
 
   } catch (err) {
@@ -49,7 +46,6 @@ export async function deleteLink(req, res) {
 
   try {
     await urlRepository.deleteShortURl(id);
-
     res.sendStatus(204);
 
   } catch (err) {

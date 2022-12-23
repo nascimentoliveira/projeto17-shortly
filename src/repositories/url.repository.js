@@ -3,7 +3,8 @@ import { connection } from '../database/database.js';
 async function insertUrl(url) {
   return connection.query(`
     INSERT INTO 
-      urls ("bigUrl")
+      urls 
+      ("bigUrl")
     VALUES 
       ($1)
     ON CONFLICT ("bigUrl") DO NOTHING;`,
@@ -144,7 +145,7 @@ async function deleteShortURl(shortUrlId) {
       "usersUrls"
     WHERE
       id=$1;`,
-    [id]
+    [shortUrlId]
   );
 }
 
