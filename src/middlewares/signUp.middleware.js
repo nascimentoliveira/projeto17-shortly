@@ -1,11 +1,6 @@
-
 import { signUpSchema } from '../models/signUp.model.js';
-import { connection } from '../database/database.js';
-import {
-  MESSAGE_INTERNAL_SERVER_ERROR,
-  MESSAGE_CLIENT_SERVER_ERROR,
-  MESSAGE_FORMAT_ERROR
-} from '../constants.js';
+import { userRepository } from '../repositories/user.repository.js';
+import { MESSAGES } from '../constants.js';
 
 export function signUpSchemaValid(req, res, next) {
 
@@ -15,7 +10,7 @@ export function signUpSchemaValid(req, res, next) {
 
   if (error) {
     const errors = error.details.map((detail) => detail.message);
-    res.status(422).send({ message: MESSAGE_FORMAT_ERROR, errors: errors });
+    res.status(422).send({ message: MESSAGES.FORMAT_ERROR, errors: errors });
     return;
   }
 
@@ -34,15 +29,7 @@ export async function signUpValid(req, res, next) {
   }
 
   try {
-    const [user] = (await connection.query(`
-      SELECT 
-        email
-      FROM 
-        users 
-      WHERE 
-        email=$1;`,
-      [email]
-    )).rows;
+    const [user] = (await userRepository.getUserByEmail(email)).rows;
 
     if (user) {
       res.status(409).send({ message: 'E-mail já cadastrado!' });
@@ -50,8 +37,8 @@ export async function signUpValid(req, res, next) {
     }
 
   } catch (err) {
-    console.error(MESSAGE_INTERNAL_SERVER_ERROR, err);
-    res.status(500).send({ message: MESSAGE_CLIENT_SERVER_ERROR });
+    console.error(MESSAGES.INTERNAL_SERVER_ERROR, err);
+    res.status(500).send({ message: MESSAGES.CLIENT_SERVER_ERROR });
     return;
   }
 
