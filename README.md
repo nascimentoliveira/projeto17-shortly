@@ -15,12 +15,6 @@ Aqui você encontrará informações sobre a estrutura da API, como executá-la 
 
 >Shortly atualmente pode ser experimentado em: [Shortly Live Demo](https://nascimentoliveira-shortly.vercel.app)
 
-## Pré-requisitos
-
-Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em seu computador:
--   Node.js (versão 14 ou superior)
--   NPM (versão 7 ou superior)
-
 ## Tecnologias Utilizadas
 
 A API da aplicação Shortly foi desenvolvido utilizando as seguintes tecnologias:
@@ -37,9 +31,15 @@ A API da aplicação Shortly foi desenvolvido utilizando as seguintes tecnologia
 
 Essas tecnologias foram escolhidas para proporcionar uma experiência de desenvolvimento moderna, eficiente e escalável.
 
-## Configuração
+## Pré-requisitos
 
-Siga as etapas abaixo para configurar e executar a API localmente:
+Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em seu computador:
+-   Node.js (versão 14 ou superior)
+-   NPM (versão 7 ou superior)
+
+## Instalação
+
+Siga as etapas abaixo para instalar, configurar e executar a API localmente:
 
 1. Clone o repositório do projeto:
     ```bash
@@ -79,9 +79,9 @@ Após a configuração, você pode iniciar a API executando o seguinte comando:
   ```
 A API será iniciada e estará pronta para receber requisições.
 
-## Endpoints*
+## Endpoints* 🛠
 
-**Uma descrição detalhada desssa seção está sendo construída!*
+🛠 **Uma descrição detalhada desssa seção está sendo construída!*
 
 A API do Shortly possui os seguintes endpoints disponíveis:
 ```
