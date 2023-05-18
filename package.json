@@ -1,5 +1,5 @@
 {
-  "name": "projeto17-shortly",
+  "name": "shortly-api",
   "version": "1.0.0",
   "description": "API for shortly application",
   "main": "index.js",
@@ -21,7 +21,7 @@
     "sql",
     "shortly"
   ],
-  "author": "Thiago Nascimento",
+  "author": "Thiago Oliveira",
   "license": "MPL-2.0",
   "bugs": {
     "url": "https://github.com/nascimentoliveira/projeto17-shortly/issues"
