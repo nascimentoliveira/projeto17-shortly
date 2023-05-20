@@ -23,13 +23,16 @@ A API da aplicação Shortly foi desenvolvido utilizando as seguintes tecnologia
 
 - Linguagem de Programação: [Javascript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference).
 
-- [Node.js](https://nodejs.org/en/about): Plataforma de desenvolvimento JavaScript assíncrona baseada no motor V8 do Chrome.
-- [Express](https://expressjs.com/pt-br/): Framework web rápido e minimalista para Node.js.
-- [Dotenv](https://www.npmjs.com/package/dotenv): Pacote para carregar variáveis de ambiente a partir de um arquivo .env.
-- [Bcrypt](https://www.npmjs.com/package/bcrypt): Biblioteca para criptografia de senhas.
-- [Joi](https://joi.dev/): Biblioteca para validação de dados.
-- [Nanoid](https://www.npmjs.com/package/nanoid): Pacote para a geração de identificadores únicos e aleatórios.
-- [PostgreSQL](https://www.postgresql.org/about/): Sistema de gerenciamento de banco de dados relacional.
+- Back-end
+  - [Node.js](https://nodejs.org/en/about): Plataforma de desenvolvimento JavaScript assíncrona baseada no motor V8 do Chrome.
+  - [Express](https://expressjs.com/pt-br/): Framework web rápido e minimalista para Node.js.
+  - [Dotenv](https://www.npmjs.com/package/dotenv): Pacote para carregar variáveis de ambiente a partir de um arquivo .env.
+  - [Bcrypt](https://www.npmjs.com/package/bcrypt): Biblioteca para criptografia de senhas.
+  - [Joi](https://joi.dev/): Biblioteca para validação de dados.
+  - [Nanoid](https://www.npmjs.com/package/nanoid): Pacote para a geração de identificadores únicos e aleatórios.
+
+- Banco de Dados: 
+    - [PostgreSQL](https://www.postgresql.org/about/): Sistema de gerenciamento de banco de dados relacional.
 
 Essas tecnologias foram escolhidas para proporcionar uma experiência de desenvolvimento moderna, eficiente e escalável.
 
