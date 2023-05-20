@@ -1,4 +1,4 @@
-![created date - shortly-api](https://img.shields.io/date/1671332400?color=007ec6&label=created&style=flat-square)
+![created date - shortly-api](https://img.shields.io/date/1671246000?color=007ec6&label=created&style=flat-square)
 ![license - shortly-api](https://img.shields.io/github/license/nascimentoliveira/shortly-api?color=007ec6&style=flat-square)
 ![last commit - shortly-api](https://img.shields.io/github/last-commit/nascimentoliveira/shortly-api?color=007ec6&style=flat-square)
 ![repo size - shortly-api](https://img.shields.io/github/repo-size/nascimentoliveira/shortly-api?color=007ec6&style=flat-square)
@@ -13,7 +13,9 @@ Aqui você encontrará informações sobre a estrutura da API, como executá-la 
 
 > O código-fonte do front-end da aplicação está hospedado no GitHub em: [Shortly Front-end](https://github.com/nascimentoliveira/shortly)
 
->Shortly atualmente pode ser experimentado em: [Shortly Live Demo](https://nascimentoliveira-shortly.vercel.app)
+> Shortly atualmente pode ser experimentado em: [Shortly Live Demo](https://nascimentoliveira-shortly.vercel.app)
+>  
+>> *A primeira requisição ao Live Demo pode levar um pouco mais de tempo para carregar. Isso ocorre porque os servidores são ativados conforme necessário e podem levar alguns instantes para iniciar!*
 
 ## Tecnologias Utilizadas
 
@@ -78,6 +80,14 @@ Após a configuração, você pode iniciar a API executando o seguinte comando:
   npm start
   ```
 A API será iniciada e estará pronta para receber requisições.
+O servidor será iniciado na porta especificada no arquivo `.env` (por padrão, é a porta 4000).
+  ```bash
+  http://localhost:4000/api
+  ```
+ou 
+  ```bash
+  http://localhost:<porta_especificada>/api
+  ```
 
 ## Endpoints* 🛠
 
