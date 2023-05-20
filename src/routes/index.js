@@ -1,14 +1,16 @@
-import { Router } from 'express';
+import { Router } from "express";
 
-import { signIn } from './signIn.router.js';
-import { signUp } from './signUp.router.js';
-import { urls } from './urls.router.js';
-import { users } from './users.router.js';
-import { ranking } from './ranking.router.js';
+import users from "./usersRouter.js";
+import auth from "./authRouter.js";
+import urls from "./urlsRouter.js";
+import ranking from "./rankingRouter.js";
 
-export const router = Router();
-router.use(signIn);
-router.use(signUp);
-router.use(urls);
-router.use(users);
-router.use(ranking);
+export const routers = Router();
+routers
+  .use(users)
+  .use(auth)
+  .use(urls)
+  .use(ranking);
+
+export default routers;
+//
