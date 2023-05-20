@@ -10,6 +10,7 @@ import { shortUrlValid } from "../middlewares/url.middleware.js";
 
 export const routers = Router();
 routers
+  .use("/", healthRouter)
   .use("/health", healthRouter)
   .use("/users", users)
   .use("/auth", auth)
