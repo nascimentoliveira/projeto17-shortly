@@ -7,7 +7,8 @@ import authSchema from "../models/auth-model.js";
 
 export const auth = Router();
 
-auth.post("/", validateSchema(authSchema), authMiddleware.authValid, authController.login);
+auth
+  .post("/", validateSchema(authSchema), authMiddleware.authValid, authController.login);
 
 export default auth;
 /**

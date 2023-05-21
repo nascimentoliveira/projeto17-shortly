@@ -96,7 +96,7 @@ ou
 
 A documentação completa dos endpoints, incluindo detalhes sobre como usar cada rota, parâmetros e exemplos de resposta, está disponível na [documentação interativa](https://shortly-api-zy7t.onrender.com/api/docs/) da API.
 
-Recomendamos consultar a documentação para obter informações abrangentes sobre os endpoints e aproveitar ao máximo as funcionalidades oferecidas pela API.
+Recomendamos consultar a documentação para obter informações abrangentes sobre os endpoints e aproveitar ao máximo as funcionalidades oferecidas. A seguir estão os endpoints disponíveis nesta API.
 
 ```
 GET /:shortURL
@@ -130,7 +130,7 @@ GET /api/urls
 ```
 
 ```
-DELETE /api/urls/:id
+DELETE /api/urls/:shortURLId
 ```
 
 ## Contribuição

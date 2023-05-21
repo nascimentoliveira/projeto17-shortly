@@ -7,7 +7,8 @@ import usersSchema from "../models/users-model.js";
 
 export const users = Router();
 
-users.post("/", validateSchema(usersSchema), usersMiddleware.userIsValid, usersController.createUser);
+users
+  .post("/", validateSchema(usersSchema), usersMiddleware.userIsValid, usersController.createUser);
 
 export default users;
 /**
