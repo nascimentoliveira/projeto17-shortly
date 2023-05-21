@@ -92,41 +92,45 @@ ou
   http://localhost:<porta_especificada>/api
   ```
 
-## Endpoints* 🛠
+## Endpoints
 
-🛠 **Uma descrição detalhada desssa seção está sendo construída!*
+A documentação completa dos endpoints, incluindo detalhes sobre como usar cada rota, parâmetros e exemplos de resposta, está disponível na [documentação interativa](https://shortly-api-zy7t.onrender.com/api/docs/) da API.
 
-A API do Shortly possui os seguintes endpoints disponíveis:
-```
-GET /ranking
-```
+Recomendamos consultar a documentação para obter informações abrangentes sobre os endpoints e aproveitar ao máximo as funcionalidades oferecidas pela API.
 
 ```
-POST /signin
+GET /:shortURL
 ```
 
 ```
-POST /signup
+GET /api/health
+```
+```
+GET /api/docs
 ```
 
 ```
-POST /urls/shorten
+GET /api/ranking
 ```
 
 ```
-GET /urls/:id
+POST /api/users
 ```
 
 ```
-GET /urls/open/:shortUrl
+POST /api/auth
+```
+🔐 ROTAS AUTENTICADAS COM TOKEN DE ACESSO (NECESSÁRIO LOGIN NA API)
+```
+POST /api/urls
 ```
 
 ```
-DELETE /urls/:id
+GET /api/urls
 ```
 
 ```
-GET /users/me
+DELETE /api/urls/:id
 ```
 
 ## Contribuição
