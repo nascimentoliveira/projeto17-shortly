@@ -70,7 +70,7 @@ async function getRankingUsers() {
     GROUP BY
       users.id
     ORDER BY
-      "visitCount" DESC
+      "visitCount" DESC, "linksCount" DESC
     LIMIT 10;`
   );
 }

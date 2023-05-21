@@ -63,7 +63,7 @@ async function getBigURLByShortURL(shortURL) {
     FROM 
       "shortURLs"
     JOIN
-    "bigURLs"
+      "bigURLs"
     ON
       "shortURLs"."bigURLId"="bigURLs".id
     WHERE 
