@@ -1,9 +1,9 @@
-import { connection } from '../database/database.js';
+import connectionDB from "../database/database.js";
 
 async function createUser(name, email, password) {
-  return connection.query(`
+  return connectionDB.query(`
     INSERT INTO 
-      users 
+      users
       (name, email, password)
     VALUES 
       ($1, $2, $3);`,
@@ -12,7 +12,7 @@ async function createUser(name, email, password) {
 }
 
 async function createSession(userId, token) {
-  return connection.query(`
+  return connectionDB.query(`
     INSERT INTO 
       sessions 
       ("userId", token)
@@ -23,7 +23,7 @@ async function createSession(userId, token) {
 }
 
 async function getUserByEmail(email) {
-  return connection.query(`
+  return connectionDB.query(`
     SELECT 
       id, name, email, password
     FROM 
@@ -35,7 +35,7 @@ async function getUserByEmail(email) {
 }
 
 async function getUserByToken(token) {
-  return connection.query(`
+  return connectionDB.query(`
     SELECT 
       users.id, 
       users.name, 
@@ -55,18 +55,18 @@ async function getUserByToken(token) {
 }
 
 async function getRankingUsers() {
-  return connection.query(`
+  return connectionDB.query(`
     SELECT 
       users.id, 
       users.name, 
-      COUNT("usersUrls"."visitCount") AS "linksCount", 
-      COALESCE(SUM("usersUrls"."visitCount"), 0) AS "visitCount"
+      COUNT("shortURLs"."visitCount") AS "linksCount", 
+      COALESCE(SUM("shortURLs"."visitCount"), 0) AS "visitCount"
     FROM
       users 
     LEFT JOIN  
-      "usersUrls"
+      "shortURLs"
     ON 
-      users.id="usersUrls"."userId"
+      users.id="shortURLs"."userId"
     GROUP BY
       users.id
     ORDER BY
@@ -75,10 +75,13 @@ async function getRankingUsers() {
   );
 }
 
-export const userRepository = {
+const usersRepository = {
   createUser,
   createSession,
   getUserByEmail,
   getUserByToken,
-  getRankingUsers
+  getRankingUsers,
 };
+
+export default usersRepository;
+//
