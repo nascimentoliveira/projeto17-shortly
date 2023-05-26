@@ -4,7 +4,8 @@ import rankingController from "../controllers/ranking-controller.js";
 
 const ranking = Router();
 
-ranking.get("/", rankingController.getRanking);
+ranking
+  .get("/", rankingController.getRanking);
 
 export default ranking;
 /**
