@@ -5,10 +5,13 @@ dotenv.config();
 
 const { Pool } = pkg;
 
-export const connectionDB = new Pool({
+const configDatabase = {
   connectionString: process.env.DATABASE_URL,
-  ssl: true
-});
+};
+
+if (process.env.MODE === "prod") configDatabase.ssl = true;
+
+const connectionDB = new Pool(configDatabase);
 
 export function checkDatabaseConnection() {
   return new Promise((resolve, reject) => {
