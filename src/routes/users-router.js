@@ -5,7 +5,7 @@ import validateSchema from "../middlewares/schemaValidator.js";
 import usersMiddleware from "../middlewares/users-middleware.js";
 import usersSchema from "../models/users-model.js";
 
-export const users = Router();
+const users = Router();
 
 users
   .post("/", validateSchema(usersSchema), usersMiddleware.userIsValid, usersController.createUser);

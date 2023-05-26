@@ -7,7 +7,7 @@ import redirect from "./routes/redirect-router.js";
 
 loadEnv();
 
-export const app = express();
+const app = express();
 app
   .use(cors())
   .use(express.json())

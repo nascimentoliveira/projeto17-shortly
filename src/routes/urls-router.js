@@ -6,7 +6,7 @@ import validateSchema from "../middlewares/schemaValidator.js";
 import urlsSchema from "../models/urls-model.js";
 import urlsMiddleware from "../middlewares/urls-middleware.js";
 
-export const urls = Router();
+const urls = Router();
 
 urls
   .all("/*", authMiddleware.tokenValid)

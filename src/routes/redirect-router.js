@@ -3,7 +3,7 @@ import { Router } from "express";
 import urlsController from "../controllers/urls-controller.js";
 import urlsMiddleware from "../middlewares/urls-middleware.js";
 
-export const redirect = Router();
+const redirect = Router();
 
 redirect
   .get("/:shortURL", urlsMiddleware.shortURLValid, urlsController.redirectToBigURL);

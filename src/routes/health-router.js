@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { checkDatabaseConnection } from "../database/database.js";
 
-export const health = Router();
+const health = Router();
 
 health
   .get("/", async (req, res) => {

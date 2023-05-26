@@ -5,7 +5,7 @@ import authMiddleware from "../middlewares/auth-middleware.js";
 import authController from "../controllers/auth-controller.js";
 import authSchema from "../models/auth-model.js";
 
-export const auth = Router();
+const auth = Router();
 
 auth
   .post("/", validateSchema(authSchema), authMiddleware.authValid, authController.login);

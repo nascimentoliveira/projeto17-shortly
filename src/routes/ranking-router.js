@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import rankingController from "../controllers/ranking-controller.js";
 
-export const ranking = Router();
+const ranking = Router();
 
 ranking.get("/", rankingController.getRanking);
 

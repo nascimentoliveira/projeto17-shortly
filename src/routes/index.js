@@ -8,7 +8,7 @@ import urls from "./urls-router.js";
 import ranking from "./ranking-router.js";
 import swaggerSpec from "../docs.js";
 
-export const api = Router();
+const api = Router();
 api
   .use("/", health)
   .use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
@@ -16,7 +16,7 @@ api
   .use("/users", users)
   .use("/auth", auth)
   .use("/urls", urls)
-  .use("/ranking", ranking)
+  .use("/ranking", ranking);
 
 export default api;
 //
