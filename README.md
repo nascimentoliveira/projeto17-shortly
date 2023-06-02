@@ -7,7 +7,7 @@
 ![stars - shortly-api](https://img.shields.io/github/stars/nascimentoliveira/shortly-api?color=007ec6&style=flat-square)
 ![forks - shortly-api](https://img.shields.io/github/forks/nascimentoliveira/shortly-api?color=007ec6&style=flat-square)
 
-# API (Back-end) da Aplicação Shortly
+# API (Back-end) da aplicação **Shortly**
 
 Aqui você encontrará informações sobre a estrutura da API, como executá-la localmente, configurar as dependências e realizar as requisições corretamente.
 
@@ -69,6 +69,14 @@ Siga as etapas abaixo para instalar, configurar e executar a API localmente:
         ```bash
         DATABASE_URL=postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}?schema=public
         ```
+    - Procure a variável `JWT_SECRET` e defina-a com privada de encriptação. Exemplo:  
+        ```bash
+        JWT_SECRET=jwt_secret
+        ```
+    - Procure a variável `MODE` e defina-a a string `"prod"` para configurar o acesso remoto ao banco de dados com SSL. Exemplo:  
+        ```bash
+        MODE=prod
+        ```
     - Verifique se existem outras variáveis de ambiente necessárias para o funcionamento da aplicação e defina-as de acordo com a sua configuração.
     - Salve o arquivo `.env`.
     
@@ -101,37 +109,31 @@ Recomendamos consultar a documentação para obter informações abrangentes sob
 ```
 GET /:shortURL
 ```
-
 ```
 GET /api/health
 ```
 ```
 GET /api/docs
 ```
-
 ```
 GET /api/ranking
 ```
-
 ```
 POST /api/users
 ```
-
 ```
 POST /api/auth
 ```
-🔐 ROTAS AUTENTICADAS COM TOKEN DE ACESSO (NECESSÁRIO LOGIN NA API)
 ```
-POST /api/urls
+*🔐 POST /api/urls
 ```
-
 ```
-GET /api/urls
+*🔐 GET /api/urls
 ```
-
 ```
-DELETE /api/urls/:shortURLId
+*🔐 DELETE /api/urls/:shortURLId
 ```
+*🔐 *Rotas autenticadas com token JWT. Necessário logar na aplicação!*
 
 ## Contribuição
 
